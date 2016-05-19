@@ -20,6 +20,7 @@ const topologySorter = topology => topology.get('rank');
 
 export const initialState = makeMap({
   availableCanvasMetrics: makeList(),
+  availableNetworks: makeList(),
   controlPipes: makeOrderedMap(), // pipeId -> controlPipe
   controlStatus: makeMap(),
   currentTopology: null,
@@ -39,6 +40,7 @@ export const initialState = makeMap({
   // class of metric, e.g. 'cpu', rather than 'host_cpu' or 'process_cpu'.
   // allows us to keep the same metric "type" selected when the topology changes.
   pinnedMetricType: null,
+  pinnedNetwork: null,
   plugins: makeList(),
   pinnedSearches: makeList(), // list of node filters
   routeSet: false,
@@ -265,6 +267,31 @@ export function rootReducer(state = initialState, action) {
       return state;
     }
 
+    //
+    // networks
+    //
+
+    case ActionTypes.SELECT_NETWORK: {
+      return state.set('selectedNetwork', action.networkId);
+    }
+
+    case ActionTypes.PIN_NETWORK: {
+      return state.merge({
+        pinnedNetwork: action.networkId,
+        selectedNetwork: action.networkId
+      });
+    }
+
+    case ActionTypes.UNPIN_NETWORK: {
+      return state.merge({
+        pinnedNetwork: null,
+      });
+    }
+
+    //
+    // metrics
+    //
+
     case ActionTypes.SELECT_METRIC: {
       return state.set('selectedMetric', action.metricId);
     }
@@ -480,6 +507,17 @@ export function rootReducer(state = initialState, action) {
 
       // apply pinned searches, filters nodes that dont match
       state = applyPinnedSearches(state);
+
+      state = state.set('availableNetworks', state.get('nodes')
+                        .valueSeq()
+                        .flatMap(node => (node.get('networks') || makeList()).map(n => (
+                          makeMap({id: n, label: n})
+                        )))
+                        .toSet()
+                        .toList()
+                        .sort());
+
+      console.log('availableNetworks', state.get('availableNetworks'));
 
       state = state.set('availableCanvasMetrics', state.get('nodes')
         .valueSeq()

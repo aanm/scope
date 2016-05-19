@@ -32,6 +32,41 @@ export function toggleHelp() {
   };
 }
 
+//
+// Networks
+//
+
+export function selectNetwork(networkId) {
+  return {
+    type: ActionTypes.SELECT_NETWORK,
+    networkId
+  };
+}
+
+export function pinNetwork(networkId) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: ActionTypes.PIN_NETWORK,
+      networkId,
+    });
+    updateRoute(getState);
+  };
+}
+
+export function unpinNetwork() {
+  return (dispatch, getState) => {
+    dispatch({
+      type: ActionTypes.UNPIN_NETWORK,
+    });
+    updateRoute(getState);
+  };
+}
+
+
+//
+// Metrics
+//
+
 export function selectMetric(metricId) {
   return {
     type: ActionTypes.SELECT_METRIC,
