@@ -119,14 +119,24 @@ function closeNodeDetails(state, nodeId) {
   if (nodeDetails.size === 0) {
     return state;
   }
+  nodeId = nodeId || nodeDetails.keySeq().last();
 
-  const popNodeId = nodeId || nodeDetails.keySeq().last();
   // remove pipe if it belongs to the node being closed
   state = state.update('controlPipes',
-    controlPipes => controlPipes.filter(pipe => pipe.get('nodeId') !== popNodeId));
-  state = state.deleteIn(['nodeDetails', popNodeId]);
+    controlPipes => controlPipes.filter(pipe => pipe.get('nodeId') !== nodeId));
+  state = state.deleteIn(['nodeDetails', nodeId]);
 
-  if (state.get('selectedNodeId') === popNodeId) {
+  // FIXME: duplicated state in a sense, look into reselect or something, we could derive the
+  // selectedNetwork from the contents of nodeDetails
+  //
+  // clear this additional state it could be 
+  if (state.get('selectedNetwork') === nodeId) {
+    state = state.set('selectedNetwork', null);
+    state = state.set('pinnedNetwork', null);
+  }
+
+  // TODO: could also be derived state.
+  if (state.get('selectedNodeId') === nodeId) {
     state = state.set('selectedNodeId', null);
   }
   return state;
