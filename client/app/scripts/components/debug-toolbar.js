@@ -25,7 +25,7 @@ ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor i
 voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`;
 
-const sample = (collection, n = 4) => _.range(_.random(n)).map(() => _.sample(collection));
+const sample = (collection, n = 4) => _.sampleSize(collection, _.random(n));
 
 
 const shapeTypes = {
