@@ -76,9 +76,9 @@ class Node extends React.Component {
   }
 
   render() {
-    const { blurred, focused, highlighted, label, matches = makeMap(),
+    const { blurred, focused, highlighted, label, matches = makeMap(), networks,
       pseudo, rank, subLabel, scaleFactor, transform, zoomScale, exportingGraph,
-      showingNetworks } = this.props;
+      showingNetworks, stack } = this.props;
     const { hovered, matched } = this.state;
     const nodeScale = focused ? this.props.selectedNodeScale : this.props.nodeScale;
 
@@ -107,7 +107,8 @@ class Node extends React.Component {
       <g className={nodeClassName} transform={transform}
         onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
 
-        {showingNetworks && <NodeNetworksOverlay size={size} networks={this.props.networks} />}
+        {showingNetworks && <NodeNetworksOverlay size={size} networks={networks}
+          stack={stack} />}
 
         {useSvgLabels ?
 
