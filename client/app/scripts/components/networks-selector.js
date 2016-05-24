@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 
 import { selectNetwork, showNetworks } from '../actions/app-actions';
 import NetworkSelectorItem from './network-selector-item';
@@ -21,20 +22,23 @@ class NetworkSelector extends React.Component {
   }
 
   render() {
-    const {availableNetworks} = this.props;
+    const { availableNetworks, showingNetworks } = this.props;
 
     const items = availableNetworks.map(network => (
       <NetworkSelectorItem key={network.get('id')} network={network} />
     ));
 
+    const className = classNames('metric-selector-action', {
+      'metric-selector-action-selected': showingNetworks
+    });
+
     return (
       <div className="metric-selector">
-        <div className="metric-selector-action" onClick={this.onClick}>
-          Showing netz: {this.props.showingNetworks ? '1' : '0'}
-        </div>
-
         <div className="metric-selector-wrapper" onMouseLeave={this.onMouseOut}>
-          {items}
+          <div className={className} onClick={this.onClick}>
+            Networks
+          </div>
+          {showingNetworks && items}
         </div>
       </div>
     );
