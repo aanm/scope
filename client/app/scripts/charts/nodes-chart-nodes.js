@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fromJS, Map as makeMap } from 'immutable';
+import { fromJS, Map as makeMap, List as makeList } from 'immutable';
 
 import { getAdjacentNodes } from '../utils/topology-utils';
 import NodeContainer from './node-container';
@@ -24,7 +24,7 @@ class NodesChartNodes extends React.Component {
       selectedNodeId && !node.get('focused')
       || searchQuery && !searchNodeMatches.has(node.get('id'))
         && !node.get('highlighted')
-      || selectedNetwork && !node.get('networks').contains(selectedNetwork));
+      || selectedNetwork && !(node.get('networks') || makeList()).contains(selectedNetwork));
 
     // make sure blurred nodes are in the background
     const sortNodes = node => {

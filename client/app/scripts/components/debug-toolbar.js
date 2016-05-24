@@ -175,7 +175,7 @@ class DebugToolbar extends React.Component {
         _.sample(SHAPES),
         _.sample(STACK_VARIANTS),
         _.sample(NODE_COUNTS),
-        sample(NETWORKS, 2)
+        sample(NETWORKS, 3)
       ))
     }));
 
