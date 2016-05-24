@@ -1,5 +1,6 @@
 /* eslint react/jsx-no-bind: "off" */
 import React from 'react';
+import d3 from 'd3';
 import _ from 'lodash';
 import Perf from 'react-addons-perf';
 import { connect } from 'react-redux';
@@ -9,7 +10,7 @@ import debug from 'debug';
 const log = debug('scope:debug-panel');
 
 import { receiveNodesDelta } from '../actions/app-actions';
-import { getNodeColor, getNodeColorDark } from '../utils/color-utils';
+import { getNodeColor, getNodeColorDark, text2degree } from '../utils/color-utils';
 
 
 const SHAPES = ['square', 'hexagon', 'heptagon', 'circle'];
@@ -213,8 +214,21 @@ class DebugToolbar extends React.Component {
           <button onClick={this.toggleColors}>toggle</button>
         </div>
 
-        {this.state.showColors && [getNodeColor, getNodeColorDark].map(fn => (
-          <table>
+        {this.state.showColors &&
+        <table>
+          <tbody>
+            {LABEL_PREFIXES.map(r => (
+              <tr key={r}>
+                <td
+                  title={`${r}`}
+                  style={{backgroundColor: d3.hsl(text2degree(r), 0.5, 0.5).toString()}} />
+              </tr>
+            ))}
+          </tbody>
+        </table>}
+
+        {this.state.showColors && [getNodeColor, getNodeColorDark].map((fn, i) => (
+          <table key={i}>
             <tbody>
               {LABEL_PREFIXES.map(r => (
                 <tr key={r}>
