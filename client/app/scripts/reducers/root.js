@@ -129,7 +129,7 @@ function closeNodeDetails(state, nodeId) {
   // FIXME: duplicated state in a sense, look into reselect or something, we could derive the
   // selectedNetwork from the contents of nodeDetails
   //
-  // clear this additional state it could be 
+  // clear this additional state
   if (state.get('selectedNetwork') === nodeId) {
     state = state.set('selectedNetwork', null);
     state = state.set('pinnedNetwork', null);
