@@ -36,6 +36,15 @@ export function toggleHelp() {
 // Networks
 //
 
+
+export function showNetworks(visible) {
+  return {
+    type: ActionTypes.SHOW_NETWORKS,
+    visible
+  };
+}
+
+
 export function selectNetwork(networkId) {
   return {
     type: ActionTypes.SELECT_NETWORK,
@@ -49,15 +58,18 @@ export function pinNetwork(networkId) {
       type: ActionTypes.PIN_NETWORK,
       networkId,
     });
+
     updateRoute(getState);
   };
 }
 
-export function unpinNetwork() {
+export function unpinNetwork(networkId) {
   return (dispatch, getState) => {
     dispatch({
       type: ActionTypes.UNPIN_NETWORK,
+      networkId,
     });
+
     updateRoute(getState);
   };
 }

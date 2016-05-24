@@ -99,9 +99,7 @@ class App extends React.Component {
 
   render() {
     const { showingDetails, showingHelp, showingMetricsSelector, showingNetworkSelector,
-      showingTerminal } = this.props;
-
-    console.log('showingNetworkSelector', showingNetworkSelector);
+     showingTerminal } = this.props;
 
     return (
       <div className="app">

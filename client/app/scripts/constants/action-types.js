@@ -52,6 +52,7 @@ const ACTION_TYPES = [
   'SELECT_NETWORK',
   'PIN_NETWORK',
   'UNPIN_NETWORK',
+  'SHOW_NETWORKS',
 ];
 
 export default _.zipObject(ACTION_TYPES, ACTION_TYPES);

@@ -152,7 +152,8 @@ class Node extends React.Component {
 export default connect(
   state => ({
     searchQuery: state.get('searchQuery'),
-    exportingGraph: state.get('exportingGraph')
+    exportingGraph: state.get('exportingGraph'),
+    showingNetworks: state.get('showingNetworks'),
   }),
   { clickNode, enterNode, leaveNode }
 )(Node);

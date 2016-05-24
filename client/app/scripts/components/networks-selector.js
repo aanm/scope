@@ -1,14 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { selectNetwork } from '../actions/app-actions';
+import { selectNetwork, showNetworks } from '../actions/app-actions';
 import NetworkSelectorItem from './network-selector-item';
 
 class NetworkSelector extends React.Component {
 
   constructor(props, context) {
     super(props, context);
+    this.onClick = this.onClick.bind(this);
     this.onMouseOut = this.onMouseOut.bind(this);
+  }
+
+  onClick() {
+    return this.props.showNetworks(!this.props.showingNetworks);
   }
 
   onMouseOut() {
@@ -24,6 +29,10 @@ class NetworkSelector extends React.Component {
 
     return (
       <div className="metric-selector">
+        <div className="metric-selector-action" onClick={this.onClick}>
+          Showing netz: {this.props.showingNetworks ? '1' : '0'}
+        </div>
+
         <div className="metric-selector-wrapper" onMouseLeave={this.onMouseOut}>
           {items}
         </div>
@@ -35,11 +44,12 @@ class NetworkSelector extends React.Component {
 function mapStateToProps(state) {
   return {
     availableNetworks: state.get('availableNetworks'),
+    showingNetworks: state.get('showingNetworks'),
     pinnedNetwork: state.get('pinnedNetwork')
   };
 }
 
 export default connect(
   mapStateToProps,
-  { selectNetwork }
+  { selectNetwork, showNetworks }
 )(NetworkSelector);
