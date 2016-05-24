@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 
 import { selectNetwork, pinNetwork, unpinNetwork } from '../actions/app-actions';
+import { getNodeColor } from '../utils/color-utils';
 
 class NetworkSelectorItem extends React.Component {
 
@@ -37,13 +38,17 @@ class NetworkSelectorItem extends React.Component {
     const className = classNames('metric-selector-action', {
       'metric-selector-action-selected': isSelected
     });
+    const style = {
+      backgroundColor: getNodeColor(id)
+    };
 
     return (
       <div
         key={id}
         className={className}
         onMouseOver={this.onMouseOver}
-        onClick={this.onMouseClick}>
+        onClick={this.onMouseClick}
+        style={style}>
         {network.get('label')}
         {isPinned && <span className="fa fa-thumb-tack"></span>}
       </div>
