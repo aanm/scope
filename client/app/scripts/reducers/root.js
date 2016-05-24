@@ -116,14 +116,17 @@ function shouldCloseExisting(state) {
 
 function closeNodeDetails(state, nodeId) {
   const nodeDetails = state.get('nodeDetails');
-  if (nodeDetails.size > 0) {
-    const popNodeId = nodeId || nodeDetails.keySeq().last();
-    // remove pipe if it belongs to the node being closed
-    state = state.update('controlPipes',
-      controlPipes => controlPipes.filter(pipe => pipe.get('nodeId') !== popNodeId));
-    state = state.deleteIn(['nodeDetails', popNodeId]);
+  if (nodeDetails.size === 0) {
+    return state;
   }
-  if (state.get('nodeDetails').size === 0 || state.get('selectedNodeId') === nodeId) {
+
+  const popNodeId = nodeId || nodeDetails.keySeq().last();
+  // remove pipe if it belongs to the node being closed
+  state = state.update('controlPipes',
+    controlPipes => controlPipes.filter(pipe => pipe.get('nodeId') !== popNodeId));
+  state = state.deleteIn(['nodeDetails', popNodeId]);
+
+  if (state.get('selectedNodeId') === popNodeId) {
     state = state.set('selectedNodeId', null);
   }
   return state;
