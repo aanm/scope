@@ -16,6 +16,7 @@ const SHAPES = ['square', 'hexagon', 'heptagon', 'circle'];
 const NODE_COUNTS = [1, 2, 3];
 const STACK_VARIANTS = [false, true];
 const METRIC_FILLS = [0, 0.1, 50, 99.9, 100];
+const NETWORKS = ['be', 'fe', 'lb', 'db'];
 
 const LOREM = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
@@ -23,7 +24,7 @@ ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor i
 voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`;
 
-const sample = (collection) => _.range(_.random(4)).map(() => _.sample(collection));
+const sample = (collection, n = 4) => _.range(_.random(n)).map(() => _.sample(collection));
 
 
 const shapeTypes = {
@@ -41,7 +42,10 @@ const LABEL_PREFIXES = _.range('A'.charCodeAt(), 'Z'.charCodeAt() + 1)
 // const randomLetter = () => _.sample(LABEL_PREFIXES);
 
 
-const deltaAdd = (name, adjacency = [], shape = 'circle', stack = false, nodeCount = 1) => ({
+const deltaAdd = (
+  name, adjacency = [], shape = 'circle', stack = false, nodeCount = 1,
+    networks = ['fe', 'be']
+) => ({
   adjacency,
   controls: {},
   shape,
@@ -53,7 +57,7 @@ const deltaAdd = (name, adjacency = [], shape = 'circle', stack = false, nodeCou
   latest: {},
   origins: [],
   rank: name,
-  networks: ['fe', 'be'],
+  networks
 });
 
 
@@ -170,7 +174,8 @@ class DebugToolbar extends React.Component {
         sample(allNodes),
         _.sample(SHAPES),
         _.sample(STACK_VARIANTS),
-        _.sample(NODE_COUNTS)
+        _.sample(NODE_COUNTS),
+        sample(NETWORKS, 2)
       ))
     }));
 

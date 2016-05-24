@@ -48,6 +48,7 @@ export const initialState = makeMap({
   searchNodeMatches: makeMap(),
   searchQuery: null,
   selectedMetric: null,
+  selectedNetwork: null,
   selectedNodeId: null,
   showingHelp: false,
   showingNetworks: false,
