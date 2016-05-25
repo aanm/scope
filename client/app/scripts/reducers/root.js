@@ -526,7 +526,8 @@ export function rootReducer(state = initialState, action) {
           const networks = node.get('metadata')
             .find(field => field.get('id') === 'docker_container_networks');
           if (networks) {
-            return node.set('networks', fromJS(networks.get('value').split(', ')));
+            return node.set('networks', fromJS(
+              networks.get('value').split(', ').map(n => ({id: n, label: n, colorKey: n}))));
           }
         }
         return node;
@@ -537,8 +538,7 @@ export function rootReducer(state = initialState, action) {
         .flatMap(node => node.get('networks') || makeList())
         .toSet()
         .toList()
-        .sort()
-        .map(n => makeMap({id: n, label: n})));
+        .sortBy(m => m.get('label')));
 
       // optimize color coding for networks
       const networkPrefix = longestCommonPrefix(state.get('availableNetworks')
@@ -547,7 +547,8 @@ export function rootReducer(state = initialState, action) {
       if (networkPrefix) {
         state = state.update('nodes',
           nodes => nodes.map(node => node.update('networks',
-            networks => networks.map(n => n.substr(networkPrefix.length)))));
+            networks => networks.map(n => n.set('colorKey',
+              n.get('colorKey').substr(networkPrefix.length))))));
 
         state = state.update('availableNetworks',
           networks => networks.map(network => network

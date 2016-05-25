@@ -27,7 +27,7 @@ function NodeNetworksOverlay({size, stack, networks = makeList()}) {
       endAngle: arcScale(i + 1)
     });
 
-    return (<path d={d} style={{fill: getNodeColor(n)}} key={n} />);
+    return (<path d={d} style={{fill: getNodeColor(n.get('colorKey'))}} key={n.get('id')} />);
   });
 
   let transform = '';
