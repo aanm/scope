@@ -33,6 +33,7 @@ export const initialState = makeMap({
   hostname: '...',
   mouseOverEdgeId: null,
   mouseOverNodeId: null,
+  networkNodes: makeMap(),
   nodeDetails: makeOrderedMap(), // nodeId -> details
   nodes: makeOrderedMap(), // nodeId -> node
   // nodes cache, infrequently updated, used for search
@@ -79,6 +80,24 @@ function processTopologies(state, nextTopologies) {
 
   const immNextTopologies = fromJS(topologiesWithId).sortBy(topologySorter);
   return state.mergeDeepIn(['topologies'], immNextTopologies);
+}
+
+function getNetworkNodes(nodes) {
+  const networks = {};
+  nodes.forEach(node => (node.get('networks') || makeList()).forEach(n => {
+    const networkId = n.get('id');
+    networks[networkId] = (networks[networkId] || []).concat([node.get('id')]);
+  }));
+  return fromJS(networks);
+}
+
+function getAvailableNetworks(nodes) {
+  return nodes
+    .valueSeq()
+    .flatMap(node => node.get('networks') || makeList())
+    .toSet()
+    .toList()
+    .sortBy(m => m.get('label'));
 }
 
 function setTopology(state, topologyId) {
@@ -533,12 +552,8 @@ export function rootReducer(state = initialState, action) {
         return node;
       }));
 
-      state = state.set('availableNetworks', state.get('nodes')
-        .valueSeq()
-        .flatMap(node => node.get('networks') || makeList())
-        .toSet()
-        .toList()
-        .sortBy(m => m.get('label')));
+      state = state.set('networkNodes', getNetworkNodes(state.get('nodes')));
+      state = state.set('availableNetworks', getAvailableNetworks(state.get('nodes')));
 
       // optimize color coding for networks
       const networkPrefix = longestCommonPrefix(state.get('availableNetworks')
@@ -643,6 +658,7 @@ export function rootReducer(state = initialState, action) {
       }
       if (action.state.pinnedNetwork) {
         state = state.set('pinnedNetwork', action.state.pinnedNetwork);
+        state = state.set('selectedNetwork', action.state.pinnedNetwork);
       }
       if (action.state.controlPipe) {
         state = state.set('controlPipes', makeOrderedMap({
