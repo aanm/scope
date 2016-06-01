@@ -7,9 +7,10 @@ import { isContrastMode } from '../utils/contrast-utils';
 
 const padding = 0.05;
 const width = 8;
-const gap = Math.PI * 1.5;
+const gap = Math.PI * 0.5;
 const offset = Math.PI;
-const arc = d3.svg.arc();
+const arc = d3.svg.arc().
+      cornerRadius(width * 0);
 const arcScale = d3.scale.linear()
   .range([gap * 0.5 + padding + offset, (Math.PI * 2 - gap * 0.5) - padding + offset]);
 

@@ -17,7 +17,7 @@ const SHAPES = ['square', 'hexagon', 'heptagon', 'circle'];
 const NODE_COUNTS = [1, 2, 3];
 const STACK_VARIANTS = [false, true];
 const METRIC_FILLS = [0, 0.1, 50, 99.9, 100];
-const NETWORKS = ['be', 'fe', 'lb', 'db'].map(n => ({id: n, label: n, colorKey: n}));
+const NETWORKS = ['be', 'fe', 'zb', 'db'].map(n => ({id: n, label: n, colorKey: n}));
 
 const LOREM = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
