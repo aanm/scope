@@ -131,8 +131,8 @@ class Node extends React.Component {
             {...this.props} />
         </g>
 
-        {showingNetworks && <NodeNetworksOverlay size={size} networks={networks}
-          stack={stack} />}
+        {showingNetworks && <NodeNetworksOverlay id={this.props.id} size={size}
+          networks={networks} stack={stack} />}
       </g>
     );
   }

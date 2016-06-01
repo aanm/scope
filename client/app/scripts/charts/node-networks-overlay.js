@@ -15,9 +15,10 @@ const arcScale = d3.scale.linear()
   .range([gap * 0.5 + padding + offset, (Math.PI * 2 - gap * 0.5) - padding + offset]);
 
 
-function NodeNetworksOverlay({size, stack, networks = makeList()}) {
+function NodeNetworksOverlay({id, size, stack, networks = makeList()}) {
   arcScale.domain([0, networks.size]);
   const radius = size * 0.8;
+  const filterId = `dropshadow-${id}`;
 
   const paths = networks.map((n, i) => {
     const d = arc({
@@ -31,7 +32,10 @@ function NodeNetworksOverlay({size, stack, networks = makeList()}) {
     return (<path
       className="node-network"
       d={d}
-      style={{fill: getNodeColor(n.get('colorKey'))}}
+      style={{
+        fill: getNodeColor(n.get('colorKey')),
+        filter: `url(#${filterId})`
+      }}
       key={n.get('id')}
     />);
   });
@@ -45,6 +49,17 @@ function NodeNetworksOverlay({size, stack, networks = makeList()}) {
 
   return (
     <g transform={transform}>
+      <filter id={filterId} height="130%">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+        <feOffset dx="2" dy="2" result="offsetblur" />
+        <feComponentTransfer>
+          <feFuncA type="linear" slope="0.3" />
+        </feComponentTransfer>
+        <feMerge>
+          <feMergeNode />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
       {paths.toJS()}
     </g>
   );
