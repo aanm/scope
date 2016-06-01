@@ -5,19 +5,18 @@ import { getNodeColor } from '../utils/color-utils';
 import { isContrastMode } from '../utils/contrast-utils';
 
 
-const padding = 0.05;
-const width = 8;
-const gap = Math.PI * 0.5;
-const offset = Math.PI;
+const width = 20;
+const gap = Math.PI * 0;
+const offset = Math.PI * 0.5;
 const arc = d3.svg.arc().
       cornerRadius(width * 0);
 const arcScale = d3.scale.linear()
-  .range([gap * 0.5 + padding + offset, (Math.PI * 2 - gap * 0.5) - padding + offset]);
+  .range([gap * 0.5 + offset, (Math.PI * 2 - gap * 0.5) + offset]);
 
 
 function NodeNetworksOverlay({id, size, stack, networks = makeList()}) {
   arcScale.domain([0, networks.size]);
-  const radius = size * 0.8;
+  const radius = size * 0.4;
   const filterId = `dropshadow-${id}`;
 
   const paths = networks.map((n, i) => {
@@ -33,8 +32,8 @@ function NodeNetworksOverlay({id, size, stack, networks = makeList()}) {
       className="node-network"
       d={d}
       style={{
-        fill: getNodeColor(n.get('colorKey')),
-        filter: `url(#${filterId})`
+        fill: getNodeColor(n.get('colorKey'))
+        // filter: `url(#${filterId})`
       }}
       key={n.get('id')}
     />);
