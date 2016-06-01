@@ -5,18 +5,17 @@ import { getNodeColor } from '../utils/color-utils';
 import { isContrastMode } from '../utils/contrast-utils';
 
 
-const r = 8;
-const padding = 8;
+const h = 3;
+const padding = 3;
 
 function NodeNetworksOverlay({size, stack, networks = makeList()}) {
-  const width = (networks.size - 1) * (r * 2 + padding);
-  const reCenter = width * -0.5;
-  const x = d3.scale.linear()
+  const offset = size + 6;
+  const y = d3.scale.linear()
     .domain([0, networks.size])
-    .range([reCenter, reCenter + networks.size * (r * 2 + padding)]);
+    .range([offset, offset + (h * networks.size) + (padding * networks.size - 1)]);
 
-  const circles = networks.map((n, i) => (
-    <circle cx={x(i)} cy={size * -0.75} r={r}
+  const bars = networks.map((n, i) => (
+    <rect x={-size * 0.5} y={y(i)} width={size} height={h}
       className="node-network"
       style={{
         fill: getNodeColor(n.get('colorKey'))
@@ -34,7 +33,7 @@ function NodeNetworksOverlay({size, stack, networks = makeList()}) {
 
   return (
     <g transform={transform}>
-      {circles.toJS()}
+      {bars.toJS()}
     </g>
   );
 }
