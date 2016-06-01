@@ -6,28 +6,33 @@ import { isContrastMode } from '../utils/contrast-utils';
 
 
 const padding = 0.05;
+const width = 8;
+const gap = Math.PI * 0.5;
 const offset = Math.PI;
-const arc = d3.svg.arc()
-  .startAngle(d => d.startAngle + offset)
-  .endAngle(d => d.endAngle + offset);
+const arc = d3.svg.arc();
 const arcScale = d3.scale.linear()
-  .range([Math.PI * 0.25 + padding, Math.PI * 1.75 - padding]);
+  .range([gap * 0.5 + padding + offset, (Math.PI * 2 - gap * 0.5) - padding + offset]);
 
 
 function NodeNetworksOverlay({size, stack, networks = makeList()}) {
   arcScale.domain([0, networks.size]);
-  const radius = size * 0.9;
+  const radius = size * 0.8;
 
   const paths = networks.map((n, i) => {
     const d = arc({
       padAngle: 0.05,
       innerRadius: radius,
-      outerRadius: radius + 4,
+      outerRadius: radius + width,
       startAngle: arcScale(i),
       endAngle: arcScale(i + 1)
     });
 
-    return (<path d={d} style={{fill: getNodeColor(n.get('colorKey'))}} key={n.get('id')} />);
+    return (<path
+      className="node-network"
+      d={d}
+      style={{fill: getNodeColor(n.get('colorKey'))}}
+      key={n.get('id')}
+    />);
   });
 
   let transform = '';
