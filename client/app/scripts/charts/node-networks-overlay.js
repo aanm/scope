@@ -1,25 +1,27 @@
 import React from 'react';
 import d3 from 'd3';
+import _ from 'lodash';
 import { List as makeList } from 'immutable';
 import { getNodeColor } from '../utils/color-utils';
 import { isContrastMode } from '../utils/contrast-utils';
 
 
-const h = 6;
-const padding = 0.1;
-const rx = 3;
+const h = 5;
+const padding = 0.05;
+const rx = 1;
 const ry = rx;
+const perRow = 4;
 
-function NodeNetworksOverlay({size, stack, networks = makeList()}) {
-  const offset = -size * 0.5 - h - 9;
+function NodeNetworksOverlay({size, orientation = 'down', stack, networks = makeList()}) {
+  const offset = orientation === 'up' ? -size * 0.5 - h - 9 : size + 6;
   const x = d3.scale.ordinal()
-    .domain(networks.map((n, i) => i).toJS())
+    .domain(_.range(Math.min(perRow, networks.size)))
     .rangeBands([size * -0.5, size * 0.5], padding, 0);
 
   const bars = networks.map((n, i) => (
     <rect
-      x={x(i)}
-      y={offset}
+      x={x(i % perRow)}
+      y={offset + Math.floor(i / perRow) * (h + 2)}
       width={x.rangeBand()}
       height={h}
       rx={rx}
