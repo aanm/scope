@@ -9,9 +9,11 @@ const h = 5;
 const padding = 0.05;
 const rx = 1;
 const ry = rx;
+const labelOffset = 38;
 
-function NodeNetworksOverlay({size, orientation = 'down', stack, networks = makeList()}) {
-  const offset = orientation === 'up' ? -size * 0.5 - h - 9 : size + 6;
+function NodeNetworksOverlay({size, stack, networks = makeList()}) {
+  const r = size * 0.5;
+  const offset = r + labelOffset;
   const w = Math.max(size, (size / 4) * networks.size);
   const x = d3.scale.ordinal()
     .domain(networks.map((n, i) => i).toJS())
